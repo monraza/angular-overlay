@@ -1,0 +1,10 @@
+.full-width {
+  width: 100%;
+}
+.two-third-width {
+  width: 66.66666667%;
+}
+
+.dialog-container {
+  margin: 20px;
+}
