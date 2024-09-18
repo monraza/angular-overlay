@@ -1,0 +1,7 @@
+<div class="blog-list-container">
+  <mat-list>
+    <mat-list-item *ngFor="let blog of blogs">
+      <a (click)="editBlog(blog)">{{ blog.title }}</a>
+    </mat-list-item>
+  </mat-list>
+</div>
