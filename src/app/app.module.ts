@@ -16,9 +16,11 @@ import { BlogListComponent } from './blog/blog-list/blog-list.component';
 import { BlogEditDialogComponent } from './blog/blog-edit-dialog/blog-edit-dialog.component';
 import { BlogService } from './blog/blog.service';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
+import { PromptEditComponentComponent } from './prompt-edit-component/prompt-edit-component.component';
+import { PromptEditOverlayComponent } from './prompt-edit-overlay/prompt-edit-overlay.component';
 
 @NgModule({
-  declarations: [AppComponent, BlogListComponent, BlogEditDialogComponent],
+  declarations: [AppComponent, BlogListComponent, BlogEditDialogComponent, PromptEditComponentComponent, PromptEditOverlayComponent],
   imports: [
     BrowserModule,
     HttpClientModule,
