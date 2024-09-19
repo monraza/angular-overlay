@@ -6,14 +6,6 @@
       <mat-label>Title</mat-label>
       <input matInput formControlName="title" />
     </mat-form-field>
-    <button
-      mat-raised-button
-      color="primary"
-      [disabled]="blogForm.controls['title'].value === originalTitle"
-      (click)="onUpdateTitle()"
-    >
-      Update Title
-    </button>
 
     <mat-form-field appearance="fill" class="full-width">
       <mat-label>Description</mat-label>
@@ -23,8 +15,6 @@
 
   <div mat-dialog-actions>
     <button mat-button (click)="onCancel()">Cancel</button>
-    <button mat-button color="warn" (click)="onDelete()">Delete</button>
-
     <button mat-raised-button color="primary" (click)="onSave()">Save</button>
   </div>
 </div>

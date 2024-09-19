@@ -1,0 +1,44 @@
+.blog-list-item {
+  position: relative;
+  height: 100px !important;
+  cursor: pointer;
+  display: flex;
+  width: auto;
+}
+
+.ellipsis-icon {
+  /* display: inline-block; */
+  visibility: hidden;
+  position: absolute;
+  top: 50%;
+  /* background: linear-gradient(to left, white 60%, rgba(255, 255, 255, 0.8)) 40%; */
+  transform: translateX(calc(-50% + 20px)) translateY(-50%);
+  width: 50px;
+  z-index: 1;
+}
+
+.blog-list-item:hover .ellipsis-icon, .blog-list-item.active .ellipsis-icon {
+  visibility: visible;
+ }  
+
+.ellipsis-icon {
+  cursor: pointer;
+}
+
+.mdc-list-item__primary-text {
+  position: relative;
+}
+
+.mdc-list-item__content {
+  position: relative;
+}
+
+.blog-list-item:hover .fade-text, .blog-list-item.active .fade-text{
+  max-width: 50px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  background: linear-gradient(to right, black 80%, rgba(0, 0, 0, 0));
+  -webkit-background-clip: text;
+  color: transparent;
+}
