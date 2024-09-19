@@ -8,6 +8,8 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatListModule } from '@angular/material/list';
 import { ReactiveFormsModule } from '@angular/forms';
+import { MatIconModule } from '@angular/material/icon';
+import { MatMenuModule } from '@angular/material/menu';
 
 import { AppComponent } from './app.component';
 import { BlogListComponent } from './blog/blog-list/blog-list.component';
@@ -27,6 +29,8 @@ import { provideAnimationsAsync } from '@angular/platform-browser/animations/asy
     MatInputModule,
     MatListModule,
     ReactiveFormsModule,
+    MatIconModule,
+    MatMenuModule,
   ],
   providers: [BlogService, provideAnimationsAsync('noop')],
   bootstrap: [AppComponent],

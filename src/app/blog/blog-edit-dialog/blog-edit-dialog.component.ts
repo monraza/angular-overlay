@@ -42,21 +42,4 @@ export class BlogEditDialogComponent {
         });
     }
   }
-
-  onDelete(): void {
-    this.blogService.deleteBlog(this.data.blog.id).subscribe(() => {
-      this.dialogRef.close(true);
-    });
-  }
-
-  onUpdateTitle(): void {
-    if (this.blogForm.controls['title'].value !== this.originalTitle) {
-      const updatedTitle = { title: this.blogForm.controls['title'].value };
-      this.blogService
-        .updateBlog(this.data.blog.id, updatedTitle)
-        .subscribe(() => {
-          this.dialogRef.close(true);
-        });
-    }
-  }
 }
