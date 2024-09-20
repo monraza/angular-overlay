@@ -28,7 +28,7 @@ export class BlogEditDialogComponent {
   }
 
   onCancel(): void {
-    this.dialogRef.close();
+    this.dialogRef.close(this.blogForm.value);
   }
 
   onSave(): void {
@@ -38,7 +38,7 @@ export class BlogEditDialogComponent {
       this.blogService
         .updateBlog(this.data.blog.id, this.blogForm.value)
         .subscribe(() => {
-          this.dialogRef.close(true);
+          this.dialogRef.close(this.blogForm.value);
         });
     }
   }

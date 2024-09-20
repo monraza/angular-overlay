@@ -54,6 +54,7 @@ export class BlogListComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
+        console.log('Dialog data', result);
         this.loadBlogs(); // Reload the blogs if any changes were made
       }
     });
