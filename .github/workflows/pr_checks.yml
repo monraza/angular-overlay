@@ -1,0 +1,43 @@
+name: Angular 16 PR Checks
+
+on:
+  pull_request:
+    branches: [main]
+
+jobs:
+  pr_checks:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: "18" # Angular 16 requires Node.js 14.20.x, 16.13.x or 18.10.x
+
+      - name: Cache node modules
+        uses: actions/cache@v3
+        with:
+          path: ~/.npm
+          key: ${{ runner.OS }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.OS }}-node-
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Install Angular CLI
+        run: npm install -g @angular/cli
+
+      - name: Run linter
+        run: ng lint
+
+      - name: Run unit tests
+        run: ng test --watch=false --browsers=ChromeHeadless
+
+      - name: Run build
+        run: ng build --configuration production
+
+      # - name: Run e2e tests
+      #   run: ng e2e --configuration=ci
