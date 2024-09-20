@@ -17,6 +17,7 @@ import { BlogEditDialogComponent } from './blog/blog-edit-dialog/blog-edit-dialo
 import { BlogService } from './blog/blog.service';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { PromptEditOverlayComponent } from './prompt-edit-overlay/prompt-edit-overlay.component';
+import { ConfirmDialogComponent } from './confirm-dialog/confirm-dialog.component';
 
 @NgModule({
   declarations: [
@@ -24,6 +25,7 @@ import { PromptEditOverlayComponent } from './prompt-edit-overlay/prompt-edit-ov
     BlogListComponent,
     BlogEditDialogComponent,
     PromptEditOverlayComponent,
+    ConfirmDialogComponent,
   ],
   imports: [
     BrowserModule,

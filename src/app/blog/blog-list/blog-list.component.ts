@@ -3,6 +3,8 @@ import { MatDialog } from '@angular/material/dialog';
 
 import { BlogService } from '../blog.service';
 import { BlogEditDialogComponent } from '../blog-edit-dialog/blog-edit-dialog.component';
+import { ConfirmDialogComponent } from '../../confirm-dialog/confirm-dialog.component';
+
 import {
   FormBuilder,
   FormGroup,
@@ -61,16 +63,33 @@ export class BlogListComponent implements OnInit {
   }
 
   onDelete(blog: any): void {
-    this.blogService.deleteBlog(blog.id).subscribe(() => {
-      console.log('Blog deleted successfully');
+    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+      width: '300px',
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        // Proceed with the delete operation
+        this.blogs = this.blogs.filter((b) => b !== blog);
+        console.log('Blog deleted:', blog);
+      } else {
+        console.log('Delete canceled');
+      }
     });
   }
 
   toggleEditMode(blogId: number): void {
     this.editMode[blogId] = !this.editMode[blogId];
+
+    setTimeout(() => {
+      const anchorElement = document.getElementById(`blog-list__${blogId}`);
+      const inputElement = anchorElement?.querySelector('input');
+      inputElement?.focus();
+    }, 0);
   }
 
   saveTitle(blog: any): void {
+    console.log('Save title', blog);
     const updatedTitle = this.blogForms[blog.id].controls['title'].value;
     if (updatedTitle !== blog.title) {
       this.blogService
@@ -80,6 +99,8 @@ export class BlogListComponent implements OnInit {
           this.toggleEditMode(blog.id); // Exit edit mode
         });
     } else {
+      console.log('No changes made');
+
       this.toggleEditMode(blog.id); // Exit edit mode
     }
   }
