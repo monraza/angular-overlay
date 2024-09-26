@@ -1,27 +1,43 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 
-import { BlogService } from '../blog.service';
+import { BlogService, Blog } from '../blog.service';
+
 import { BlogEditDialogComponent } from '../blog-edit-dialog/blog-edit-dialog.component';
 import { ConfirmDialogComponent } from '../../confirm-dialog/confirm-dialog.component';
 
-import {
-  FormBuilder,
-  FormGroup,
-  Validators,
-  FormControl,
-} from '@angular/forms';
+import { FormBuilder, FormGroup } from '@angular/forms';
+import { Observable } from 'rxjs';
+import { CommonModule } from '@angular/common';
+import { MatMenuModule } from '@angular/material/menu';
+import { MatIconModule } from '@angular/material/icon';
+import { ReactiveFormsModule } from '@angular/forms';
+import { FormsModule } from '@angular/forms';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatListModule } from '@angular/material/list';
+import { MatCardModule } from '@angular/material/card';
 
 @Component({
   selector: 'app-blog-list',
   templateUrl: './blog-list.component.html',
   styleUrls: ['./blog-list.component.css'],
+  standalone: true,
+  imports: [
+    CommonModule,
+    MatMenuModule,
+    MatIconModule,
+    ReactiveFormsModule,
+    FormsModule,
+    MatFormFieldModule,
+    MatListModule,
+    MatCardModule,
+  ],
 })
 export class BlogListComponent implements OnInit {
-  blogs: any[] = [];
-  showOptions: { [key: string]: boolean } = {};
-  editMode: { [id: number]: boolean } = {}; // Tracks which blog is in edit mode
-  blogForms: { [id: number]: FormGroup } = {}; // Stores form instances for each blog
+  blogs$: Observable<Blog[]> | undefined;
+  showOptions: Record<string, boolean> = {};
+  editMode: Record<string, boolean> = {}; // Tracks which blog is in edit mode
+  blogForms: Record<string, FormGroup> = {}; // Stores form instances for each blog
 
   toggleOptions(blogId: string): void {
     this.showOptions[blogId] = !this.showOptions[blogId];
@@ -31,16 +47,14 @@ export class BlogListComponent implements OnInit {
     private blogService: BlogService,
     public dialog: MatDialog,
     private fb: FormBuilder
-  ) {}
+  ) {
+    this.blogs$ = this.blogService.blogs$;
+  }
 
   ngOnInit(): void {
     this.loadBlogs();
-  }
-
-  loadBlogs() {
-    this.blogService.getBlogs().subscribe((blogs) => {
-      this.blogs = blogs;
-      this.blogs.forEach((blog) => {
+    this.blogs$?.subscribe((blogs) => {
+      blogs.forEach((blog: Blog) => {
         this.blogForms[blog.id] = this.fb.group({
           title: [blog.title],
         });
@@ -48,7 +62,11 @@ export class BlogListComponent implements OnInit {
     });
   }
 
-  editBlog(blog: any): void {
+  loadBlogs(): void {
+    this.blogService.getBlogs();
+  }
+
+  editBlog(blog: Blog): void {
     const dialogRef = this.dialog.open(BlogEditDialogComponent, {
       width: '500px',
       data: { blog },
@@ -56,13 +74,12 @@ export class BlogListComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
-        console.log('Dialog data', result);
         this.loadBlogs(); // Reload the blogs if any changes were made
       }
     });
   }
 
-  onDelete(blog: any): void {
+  onDelete(blog: Blog): void {
     const dialogRef = this.dialog.open(ConfirmDialogComponent, {
       width: '300px',
     });
@@ -70,7 +87,7 @@ export class BlogListComponent implements OnInit {
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
         // Proceed with the delete operation
-        this.blogs = this.blogs.filter((b) => b !== blog);
+        this.blogService.deleteBlog(blog);
         console.log('Blog deleted:', blog);
       } else {
         console.log('Delete canceled');
@@ -78,7 +95,7 @@ export class BlogListComponent implements OnInit {
     });
   }
 
-  toggleEditMode(blogId: number): void {
+  toggleEditMode(blogId: string): void {
     this.editMode[blogId] = !this.editMode[blogId];
 
     setTimeout(() => {
@@ -93,7 +110,7 @@ export class BlogListComponent implements OnInit {
     const updatedTitle = this.blogForms[blog.id].controls['title'].value;
     if (updatedTitle !== blog.title) {
       this.blogService
-        .updateBlog(blog.id, { title: updatedTitle })
+        .updateBlog(blog.id, { ...blog, title: updatedTitle })
         .subscribe(() => {
           blog.title = updatedTitle; // Update the title in the UI
           this.toggleEditMode(blog.id); // Exit edit mode
@@ -114,7 +131,7 @@ export class BlogListComponent implements OnInit {
 
   addActive(blog: any): void {
     const anchorElement = document.getElementById(`blog-list__${blog.id}`);
-    console.log({ anchorElement });
+
     if (anchorElement) {
       anchorElement.classList.add('active');
     }

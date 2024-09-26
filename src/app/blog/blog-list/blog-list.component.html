@@ -1,43 +1,50 @@
 <div class="blog-list-container">
-  <mat-list>
-    <a
-      mat-list-item
-      *ngFor="let blog of blogs"
-      class="blog-list-item"
-      id="blog-list__{{ blog.id }}"
-    >
-      <span
-        *ngIf="!editMode[blog.id]"
-        (click)="editBlog(blog)"
-        class="fade-text"
-        >{{ blog.title }}</span
+  <mat-card appearance="outlined">
+    <mat-list *ngIf="blogs$ | async as blogs">
+      <div>Total: {{ blogs.length }}</div>
+      <a
+        mat-list-item
+        *ngFor="let blog of blogs"
+        class="blog-list-item"
+        id="blog-list__{{ blog.id }}"
       >
-      <!-- Edit mode: Show title as an editable input field -->
-      <mat-form-field *ngIf="editMode[blog.id]">
-        <input
-          matInput
-          [formControl]="$any(blogForms[blog.id].controls['title'])"
-          (blur)="saveTitle(blog)"
-        />
-      </mat-form-field>
-
-      <mat-icon
-        class="ellipsis-icon hidden"
-        [matMenuTriggerFor]="menu"
-        *ngIf="!editMode[blog.id]"
-        (click)="addActive(blog)"
-        >more_horiz</mat-icon
-      >
-      <mat-menu #menu="matMenu" (closed)="removeActive()">
-        <button
-          mat-menu-item
+        <span
           *ngIf="!editMode[blog.id]"
-          (click)="toggleEditMode(blog.id)"
+          (click)="editBlog(blog)"
+          (keydown.enter)="editBlog(blog)"
+          (keydown.space)="editBlog(blog)"
+          class="fade-text"
+          tabindex="0"
+          >{{ blog.title }}</span
         >
-          Rename
-        </button>
-        <button mat-menu-item (click)="onDelete(blog)">Delete</button>
-      </mat-menu>
-    </a>
-  </mat-list>
+        <!-- Edit mode: Show title as an editable input field -->
+        <mat-form-field *ngIf="editMode[blog.id]" style="width: 100%">
+          <input
+            #titleInput
+            matInput
+            [formControl]="$any(blogForms[blog.id].controls['title'])"
+            (blur)="saveTitle(blog)"
+          />
+        </mat-form-field>
+
+        <mat-icon
+          class="ellipsis-icon hidden"
+          [matMenuTriggerFor]="menu"
+          *ngIf="!editMode[blog.id]"
+          (click)="addActive(blog)"
+          >more_horiz</mat-icon
+        >
+        <mat-menu #menu="matMenu" (closed)="removeActive()">
+          <button
+            mat-menu-item
+            *ngIf="!editMode[blog.id]"
+            (click)="toggleEditMode(blog.id)"
+          >
+            Rename
+          </button>
+          <button mat-menu-item (click)="onDelete(blog)">Delete</button>
+        </mat-menu>
+      </a>
+    </mat-list>
+  </mat-card>
 </div>
