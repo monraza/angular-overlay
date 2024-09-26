@@ -8,6 +8,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatListModule } from '@angular/material/list';
 import { ReactiveFormsModule } from '@angular/forms';
+import { FormsModule } from '@angular/forms';
 import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
 
@@ -18,11 +19,12 @@ import { BlogService } from './blog/blog.service';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { PromptEditOverlayComponent } from './prompt-edit-overlay/prompt-edit-overlay.component';
 import { ConfirmDialogComponent } from './confirm-dialog/confirm-dialog.component';
+import { AddBlogComponent } from './blog/add-blog/add-blog.component';
+import { MatCardModule } from '@angular/material/card';
 
 @NgModule({
   declarations: [
     AppComponent,
-    BlogListComponent,
     BlogEditDialogComponent,
     PromptEditOverlayComponent,
     ConfirmDialogComponent,
@@ -39,6 +41,10 @@ import { ConfirmDialogComponent } from './confirm-dialog/confirm-dialog.componen
     ReactiveFormsModule,
     MatIconModule,
     MatMenuModule,
+    MatCardModule,
+    FormsModule,
+    BlogListComponent,
+    AddBlogComponent,
   ],
   providers: [BlogService, provideAnimationsAsync('noop')],
   bootstrap: [AppComponent],
