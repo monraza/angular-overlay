@@ -14,7 +14,8 @@ export class BlogEditDialogComponent {
 
   constructor(
     public dialogRef: MatDialogRef<BlogEditDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: any,
+    @Inject(MAT_DIALOG_DATA)
+    public data: { blog: { id: number; title: string; content: string } },
     private fb: FormBuilder,
     private blogService: BlogService
   ) {
