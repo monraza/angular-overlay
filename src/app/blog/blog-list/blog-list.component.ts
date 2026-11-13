@@ -105,7 +105,7 @@ export class BlogListComponent implements OnInit {
     }, 0);
   }
 
-  saveTitle(blog: any): void {
+  saveTitle(blog: Blog): void {
     console.log('Save title', blog);
     const updatedTitle = this.blogForms[blog.id].controls['title'].value;
     if (updatedTitle !== blog.title) {
@@ -129,7 +129,7 @@ export class BlogListComponent implements OnInit {
   //   this.toggleEditMode(blogId);
   // }
 
-  addActive(blog: any): void {
+  addActive(blog: Blog): void {
     const anchorElement = document.getElementById(`blog-list__${blog.id}`);
 
     if (anchorElement) {

@@ -43,7 +43,7 @@ export class BlogService {
       });
   }
 
-  updateBlog(id: number, data: Blog): Observable<Blog> {
+  updateBlog(id: string, data: Blog): Observable<Blog> {
     return new Observable<Blog>((observer) => {
       observer.next(data);
       observer.complete();
